@@ -1,0 +1,14 @@
+c:\users\kollais\documents\visual studio 2015\Projects\calc\calc\bin\Debug\calc.exe.config
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\bin\Debug\calc.exe
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\bin\Debug\calc.pdb
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\View\MainWindow.g.cs
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\App.g.cs
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc_MarkupCompile.cache
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc_MarkupCompile.lref
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\View\MainWindow.baml
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc.g.resources
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc.Properties.Resources.resources
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc.csproj.GenerateResource.Cache
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc.exe
+C:\Users\kollais\Documents\Visual Studio 2015\Projects\calc\calc\obj\Debug\calc.pdb
+C:\Users\kollais\documents\visual studio 2015\Projects\calc\calc\obj\Debug\GeneratedInternalTypeHelper.g.cs
