@@ -13,7 +13,7 @@ namespace calc.ModelView
 {
     class CalcModelView : INotifyPropertyChanged
     {
-        //realizing INotifyPropertyChanged interface 
+        //implementing INotifyPropertyChanged interface 
         private Model.CalcModel calculator = new Model.CalcModel();
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -375,7 +375,7 @@ namespace calc.ModelView
         }
     }
 
-    //realizing ICommand interface to work with commands from buttons in view
+    //implementing ICommand interface to work with commands from buttons in view
     public class RelayCommand : ICommand
     {
         private Action<object> commandTask;
