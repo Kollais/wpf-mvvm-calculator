@@ -8,13 +8,13 @@ using System.Windows.Shapes;
 using System.Windows.Converters;
 using System.Windows.Data;
 using System.Windows.Input;
+using calc.Model;
 
 namespace calc.ModelView
 {
     class CalcModelView : INotifyPropertyChanged
     {
         //implementing INotifyPropertyChanged interface 
-        private Model.CalcModel calculator = new Model.CalcModel();
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -40,6 +40,9 @@ namespace calc.ModelView
             InputLength = 0;
             isInScientForm = false;
             ScientInput = "";
+            InputMemory = "0";
+            isNumbBtnPressedLast = false;
+            isEqBtnPressedLast = false;
     }
 
         //log for storing all recent events
@@ -82,9 +85,9 @@ namespace calc.ModelView
             }
         }
 
-        //is calculator ready to work (it's not when there's error mrssage on display)
+        //is calculator ready to work (it's not when there's error message on display)
         private bool isCalcEnabled; 
-        //have operation ended
+        //has operation ended
         private bool isOpEnded;
         //first and second operand
         private string FirstN;
@@ -97,6 +100,13 @@ namespace calc.ModelView
         //scientific form (1,167e-3)
         private bool isInScientForm;
         private string ScientInput;
+        //stores input in memory section of calculator
+        private string InputMemory;
+        //was numeric button pressed last
+        private bool isNumbBtnPressedLast;
+        //was equals button pressed last
+        private bool isEqBtnPressedLast;
+
 
         public ICommand NumberBtnPressed {
             get { return new RelayCommand(param => numberBtnPressed(param)); } }
@@ -114,8 +124,10 @@ namespace calc.ModelView
             get { return new RelayCommand(param => clearEntryBtnPressed()); } }
         public ICommand PointBtnPressed {
             get { return new RelayCommand(param => pointBtnPressed()); } }
+        public ICommand MemoryBtnPressed{
+            get { return new RelayCommand(param => memoryBtnPressed(param)); } }
 
-        //transforms numbers with too much digits into shorter scientific form
+        //transforms numbers with large amount of digits into shorter scientific form
         private string toScientForm(string par)
         {
             double n = Convert.ToDouble(par);
@@ -140,6 +152,8 @@ namespace calc.ModelView
             {
                 if(InputLength <= MaxInpLength)
                 {
+                    isNumbBtnPressedLast = true;
+                    isEqBtnPressedLast = false;
                     if (isOpEnded)
                     {
                         Input = numb;
@@ -162,7 +176,7 @@ namespace calc.ModelView
 
         private bool ValidateOutput(string inp)
         {
-            if (inp == "Invalid input" || inp == "Can't divide by zero" || inp=="Type overflow")
+            if (inp == "Invalid input" || inp == "Divide by 0" || inp=="Type overflow")
                 return false;
             return true;
         }
@@ -183,16 +197,17 @@ namespace calc.ModelView
             {
                 isOpEnded = true;
                 InputLength = 0;
+                isEqBtnPressedLast = false;
                 switch (oper)
                 {
                     case ("r"):
                         Stack += "sqrt(" + Input + ")";
-                        Input = calculator.root(Input);
+                        Input = CalcOperations.root(Input);
                         isCalcEnabled = ValidateOutput(Input);
                         break;
                     case ("-1"):
                         Stack += "reciproc(" + Input + ")";
-                        Input = calculator.inv(Input);
+                        Input = CalcOperations.inv(Input);
                         isCalcEnabled = ValidateOutput(Input);
                         break;
                     case ("+-"):
@@ -208,6 +223,13 @@ namespace calc.ModelView
                             }  
                         }
                         break;
+                    case ("%"):
+                        if (FirstN == "")
+                            Input = "0";
+                        else
+                            Input = CalcOperations.percent(FirstN,Input);
+                        Stack += Input;
+                        break;
                     default:
                         break;
                 }
@@ -217,7 +239,7 @@ namespace calc.ModelView
         //calculates result
         private string Calculate(string operation, string input)
         {
-            if(LastOp=="")
+            if(LastOp=="" || !isNumbBtnPressedLast)
             {
                 LastOp = operation;
                 FirstN = input;
@@ -229,51 +251,19 @@ namespace calc.ModelView
                 switch(LastOp)
                 {
                     case ("+"):
-                        if(calculator.isPercentUsed)
-                        {
-                            string buf = calculator.percent(input, FirstN);
-                            FirstN = calculator.plus(FirstN, buf);
-                            calculator.isPercentUsed = false;
-                        }
-                        else
-                            FirstN = calculator.plus(FirstN, SecondN);
-                        SecondN = "";
+                        FirstN = CalcOperations.plus(FirstN, SecondN);
                         LastOp = operation;
                         return FirstN;
                     case ("-"):
-                        if (calculator.isPercentUsed)
-                        {
-                            string buf = calculator.percent(input, FirstN);
-                            FirstN = calculator.minus(FirstN, buf);
-                            calculator.isPercentUsed = false;
-                        }
-                        else
-                            FirstN = calculator.minus(FirstN, SecondN);
-                        SecondN = "";
+                        FirstN = CalcOperations.minus(FirstN, SecondN);
                         LastOp = operation;
                         return FirstN;
                     case ("*"):
-                        if (calculator.isPercentUsed)
-                        {
-                            string buf = calculator.percent(input, FirstN);
-                            FirstN = calculator.mult(FirstN, buf);
-                            calculator.isPercentUsed = false;
-                        }
-                        else
-                            FirstN = calculator.mult(FirstN, SecondN);
-                        SecondN = "";
+                        FirstN = CalcOperations.mult(FirstN, SecondN);
                         LastOp = operation;
                         return FirstN;
                     case ("/"):
-                        if (calculator.isPercentUsed)
-                        {
-                            string buf = calculator.percent(input, FirstN);
-                            FirstN = calculator.div(FirstN, buf);
-                            calculator.isPercentUsed = false;
-                        }
-                        else
-                            FirstN = calculator.div(FirstN, SecondN);
-                        SecondN = "";
+                        FirstN = CalcOperations.div(FirstN, SecondN);
                         LastOp = operation;
                         return FirstN;
                     default:
@@ -282,39 +272,52 @@ namespace calc.ModelView
             }
         }
 
+        private void DoTwoOperandOperation (char operation)
+        {
+            if (isNumbBtnPressedLast)
+                Stack += Input + operation.ToString();
+            else
+            {
+                if(Stack.Length>0)
+                {
+                    if (Stack[Stack.Length-1] != operation)
+                    {
+                        Stack = Stack.Remove(Stack.Length-1);
+                        Stack += operation.ToString();
+                    }
+                }  
+            }
+            Input = Calculate(operation.ToString(), Input);
+            isCalcEnabled = ValidateOutput(Input);
+        }
+
         private void twoOperandOperationBtnPressed(object param)
         {
             string oper = param.ToString();
             if (isCalcEnabled)
             {
                 isOpEnded = true;
+                isEqBtnPressedLast = false;
                 InputLength = 0;
                 isCalcEnabled = ValidateOutput(Input);
                 switch (oper)
                 {
                     case ("/"):
-                        Stack += Input + "/";
-                        Input = Calculate("/", Input);
-                        isCalcEnabled = ValidateOutput(Input);
+                        DoTwoOperandOperation('/');
                         break;
                     case ("*"):
-                        Stack += Input + "*";
-                        Input = Calculate("*", Input);
+                        DoTwoOperandOperation('*');
                         break;
                     case ("-"):
-                        Stack += Input + "-";
-                        Input = Calculate("-", Input);
+                        DoTwoOperandOperation('-');
                         break;
                     case ("+"):
-                        Stack += Input + "+";
-                        Input = Calculate("+", Input);
-                        break;
-                    case ("%"):
-                        calculator.isPercentUsed = true;
+                        DoTwoOperandOperation('+');
                         break;
                     default:
                         break;
                 }
+                isNumbBtnPressedLast = false;
             }
         }
 
@@ -323,12 +326,19 @@ namespace calc.ModelView
             if (isCalcEnabled)
             {
                 isOpEnded = true;
-                Input = Calculate(LastOp, Input);
-                Stack = "";
-                LastOp = "";
-                FirstN = "";
-                SecondN = "";
-                InputLength = 0;
+                
+                if (isEqBtnPressedLast)
+                {
+                    isNumbBtnPressedLast = true;
+                    Input = Calculate(LastOp, SecondN);
+                }
+                else
+                {
+                    Input = Calculate(LastOp, Input);
+                    isNumbBtnPressedLast = false;
+                }    
+                Stack = "";                
+                isEqBtnPressedLast = true;
                 isCalcEnabled = ValidateOutput(Input);
             }
         }
@@ -337,11 +347,14 @@ namespace calc.ModelView
         {
             if(isCalcEnabled)
             {
-                if (Input.Length > 1)
-                    Input = Input.Substring(0, Input.Length - 1); 
-                else
-                    Input = "0";
-                InputLength--;
+                if(isNumbBtnPressedLast)
+                {
+                    if (Input.Length > 1)
+                        Input = Input.Substring(0, Input.Length - 1);
+                    else
+                        Input = "0";
+                    InputLength--;
+                }
             }
         }
 
@@ -355,6 +368,7 @@ namespace calc.ModelView
             FirstN = "";
             SecondN = "";
             InputLength = 0;
+            isNumbBtnPressedLast = false;
         }
 
         private void clearEntryBtnPressed()
@@ -363,6 +377,7 @@ namespace calc.ModelView
                 isCalcEnabled = true;
             Input = "0";
             InputLength = 0;
+            isNumbBtnPressedLast = false;
         }
 
         private void pointBtnPressed()
@@ -371,6 +386,64 @@ namespace calc.ModelView
             {
                 Input += ",";
                 InputLength++;
+            }
+        }
+
+        private void DoMemoryBtnOper(bool isPlus)
+        {
+            double buf1 = 0, buf2 = 0;
+            try
+            {
+                buf1 = Convert.ToDouble(InputMemory);
+            }
+            catch(Exception e)
+            {
+                Input = "Invalid input";
+                isCalcEnabled = ValidateOutput(Input);
+            }
+            try
+            {
+                buf2 = Convert.ToDouble(Input);
+            }
+            catch (Exception e)
+            {
+                Input = "Invalid input";
+                isCalcEnabled = ValidateOutput(Input);
+            }
+            if (isPlus)
+                InputMemory = (buf1 + buf2).ToString();
+            else
+                InputMemory = (buf1 - buf2).ToString();
+        }
+
+        private void memoryBtnPressed(object param)
+        {
+            string oper = param.ToString();
+            if (isCalcEnabled)
+            {
+                isOpEnded = true;
+                InputLength = 0;
+                isCalcEnabled = ValidateOutput(Input);
+                switch (oper)
+                {
+                    case ("mc"):
+                        InputMemory = "0";
+                        break;
+                    case ("mr"):
+                        Input= InputMemory;
+                        break;
+                    case ("ms"):
+                        InputMemory = Input;
+                        break;
+                    case ("mp"):
+                        DoMemoryBtnOper(true);
+                        break;
+                    case ("mm"):
+                        DoMemoryBtnOper(false);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
