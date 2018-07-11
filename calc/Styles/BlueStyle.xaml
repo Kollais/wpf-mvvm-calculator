@@ -1,0 +1,164 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:calc.Styles"
+                    xmlns:cb="clr-namespace:calc.View">
+
+    <!-- Converter for resizng font -->
+    <cb:Converter x:Key="Converter" />
+
+    <!-- Blue style for both grids -->
+    <Style x:Key="styleGrid">
+        <Setter Property="Control.Background" Value="#E0F2F7" />
+    </Style>
+
+    <!-- Blue style for numeric buttons and comma -->
+    <Style x:Key="styleButton2" >
+        <Setter Property="Control.OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
+                Path = ActualHeight, ConverterParameter=0, Converter={StaticResource Converter}}"/>
+        <Setter Property="Control.FontFamily" Value="MS Sans Serif" />
+        <Setter Property="Control.Foreground" Value="MidnightBlue" />
+        <Setter Property="Control.BorderBrush" Value="LightSlateGray" />
+        <Setter Property="Control.Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,3">
+                    <GradientStop Color="GhostWhite" Offset="0" />
+                    <GradientStop Color="#CEE3F6" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Control.Margin" Value="3,3,3,3" />
+
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" BorderThickness="0.5"
+        				BorderBrush="LightSlateGray" CornerRadius="0.5" 
+        				Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                        <GradientStop Color="LemonChiffon" Offset="0"/>
+                                        <GradientStop Color="Orange" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                        <GradientStop Color="Goldenrod" Offset="0"/>
+                                        <GradientStop Color="Chocolate" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="Brown"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- Blue style for operaion buttons -->
+    <Style x:Key="styleButton1">
+        <Setter Property="Control.OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
+                Path = ActualHeight, ConverterParameter=1, Converter={StaticResource Converter}}"/>
+        <Setter Property="Control.FontFamily" Value="MS Sans Serif" />
+        <Setter Property="Control.Foreground" Value="MidnightBlue" />
+        <Setter Property="Control.BorderBrush" Value="LightSlateGray" />
+        <Setter Property="Control.BorderThickness" Value="0.7" />
+        <Setter Property="Control.Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="AliceBlue" Offset="0" />
+                    <GradientStop Color="#CEE3F6" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Control.Margin" Value="3,3,3,3" />
+
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" BorderThickness="0.7"
+        				BorderBrush="LightSlateGray" CornerRadius="0.5" 
+        				Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                        <GradientStop Color="LemonChiffon" Offset="0"/>
+                                        <GradientStop Color="Orange" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                        <GradientStop Color="Goldenrod" Offset="0"/>
+                                        <GradientStop Color="Chocolate" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="Brown"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- Blue style for RichTexBox -->
+    <Style x:Key="styleTextbox">
+        <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
+                Path = ActualHeight, ConverterParameter=3, Converter={StaticResource Converter}}"/>
+        <Setter Property="Control.FontFamily" Value="Consolas" />
+        <Setter Property="Control.Foreground" Value="Black" />
+        <Setter Property="Control.Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#CEE3F6" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FrameworkElement.Margin" Value="5" />
+        <Setter Property="Control.Padding" Value="5" />
+    </Style>
+
+    <!-- Blue style for equals button -->
+    <Style x:Key="styleTallButton" BasedOn="{StaticResource styleButton1}">
+        <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
+                Path = ActualWidth, ConverterParameter=2, Converter={StaticResource Converter}}"/>
+    </Style>
+
+    <!-- Blue style for menu -->
+    <Style x:Key="styleMenu">
+        <Setter Property="Control.Background" Value="#E0F2F7"/>
+    </Style>
+
+    <!-- Blue style for menu item -->
+    <Style x:Key="styleMenuItem">
+        <Setter Property="Control.Background" Value="#CEE3F6"/>
+        <Setter Property="Control.BorderBrush" Value="LightSteelBlue"/>
+    </Style>
+
+</ResourceDictionary>
