@@ -7,257 +7,13 @@
         xmlns:local="clr-namespace:calc.ModelView"
         xmlns:cb="clr-namespace:calc.View"
         mc:Ignorable="d"
-        Title="Calculator" Height="320" Width="225" Icon="/mainicon.ico" >
+        Title="Calculator" Height="360" Width="225" Icon="/mainicon.ico" >
     <Window.DataContext>
         <local:CalcModelView x:Name="VM"></local:CalcModelView>
     </Window.DataContext>
     <Window.Resources>
-        
         <!-- Converter for resizng font -->
         <cb:Converter x:Key="Converter" />
-
-        <!-- Blue style for both grids -->
-        <Style x:Key="blueGrid">
-            <Setter Property="Control.Background" Value="#E0F2F7" />
-        </Style>
-
-        <!-- Pink style for both grids -->
-        <Style x:Key="pinkGrid">
-            <Setter Property="Control.Background" Value="MidnightBlue" />
-        </Style>
-
-        <!-- Blue style for numeric buttons and comma -->
-        <Style x:Key="lightBlueButton" >
-            <Setter Property="Control.OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = ActualHeight, ConverterParameter=1, Converter={StaticResource Converter}}"/>
-            <Setter Property="Control.FontFamily" Value="MS Sans Serif" />
-            <Setter Property="Control.Foreground" Value="MidnightBlue" />
-            <Setter Property="Control.BorderBrush" Value="LightSlateGray" />
-            <Setter Property="Control.Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,3">
-                        <GradientStop Color="GhostWhite" Offset="0" />
-                        <GradientStop Color="#CEE3F6" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Control.Margin" Value="3,3,3,3" />
-
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="0.5"
-        				BorderBrush="LightSlateGray" CornerRadius="0.5" 
-        				Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="LemonChiffon" Offset="0"/>
-                                            <GradientStop Color="Orange" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="Goldenrod" Offset="0"/>
-                                            <GradientStop Color="Chocolate" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="Brown"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <!-- Pink style for all buttons -->
-        <Style x:Key="lightPinkButton" BasedOn="{StaticResource lightBlueButton}" >
-            <Setter Property="Control.Foreground" Value="DeepPink" />
-            <Setter Property="Control.Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,3">
-                        <GradientStop Color="White" Offset="0" />
-                        <GradientStop Color="Pink" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="0.5"
-        				BorderBrush="LightCoral" CornerRadius="5" 
-        				Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="LemonChiffon" Offset="0"/>
-                                            <GradientStop Color="Orange" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="Goldenrod" Offset="0"/>
-                                            <GradientStop Color="Chocolate" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="Brown"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <!-- Blue style for operaion buttons -->
-        <Style x:Key="blueButton">
-            <Setter Property="Control.OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = ActualHeight, ConverterParameter=1, Converter={StaticResource Converter}}"/>
-            <Setter Property="Control.FontFamily" Value="MS Sans Serif" />
-            <Setter Property="Control.Foreground" Value="MidnightBlue" />
-            <Setter Property="Control.BorderBrush" Value="LightSlateGray" />
-            <Setter Property="Control.BorderThickness" Value="0.7" />
-            <Setter Property="Control.Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="AliceBlue" Offset="0" />
-                        <GradientStop Color="#CEE3F6" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Control.Margin" Value="3,3,3,3" />
-
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="0.7"
-        				BorderBrush="LightSlateGray" CornerRadius="0.5" 
-        				Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="LemonChiffon" Offset="0"/>
-                                            <GradientStop Color="Orange" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
-                                            <GradientStop Color="Goldenrod" Offset="0"/>
-                                            <GradientStop Color="Chocolate" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="Brown"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <!-- Blue style for RichTexBox -->
-        <Style x:Key="blueTextbox">
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = 2*ActualHeight, ConverterParameter=3, Converter={StaticResource Converter}}"/>
-            <Setter Property="Control.FontFamily" Value="Consolas" />
-            <Setter Property="Control.Foreground" Value="Black" />
-            <Setter Property="Control.Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#CEE3F6" Offset="0" />
-                        <GradientStop Color="White" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="FrameworkElement.Margin" Value="5" />
-            <Setter Property="Control.Padding" Value="5" />
-        </Style>
-
-        <!-- Pink style for RichTextBox -->
-        <Style x:Key="pinkTextbox" BasedOn="{StaticResource blueTextbox}">
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = 2*ActualHeight, ConverterParameter=3, Converter={StaticResource Converter}}"/>
-            <Setter Property="Control.Foreground" Value="Indigo" />
-            <Setter Property="Control.Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="Orchid" Offset="0" />
-                        <GradientStop Color="White" Offset="1" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Blue style for equals button -->
-        <Style x:Key="tallButton" BasedOn="{StaticResource blueButton}">
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = ActualWidth, ConverterParameter=2, Converter={StaticResource Converter}}"/>
-        </Style>
-
-        <!-- Pink style for equals button -->
-        <Style x:Key="pkTallButton" BasedOn="{StaticResource lightPinkButton}">
-            <Setter Property="Control.FontSize" Value="{Binding RelativeSource={RelativeSource Self}, 
-                Path = ActualWidth, ConverterParameter=2, Converter={StaticResource Converter}}"/>
-        </Style>
-
-        <!-- Blue style for menu -->
-        <Style x:Key="blueMenu">
-            <Setter Property="Control.Background" Value="#E0F2F7"/>
-        </Style>
-
-        <!-- Blue style for menu item -->
-        <Style x:Key="blueMenuItm">
-            <Setter Property="Control.Background" Value="#CEE3F6"/>
-            <Setter Property="Control.BorderBrush" Value="LightSteelBlue"/>
-        </Style>
-
-        <!-- Pink style for menu -->
-        <Style x:Key="pinkMenu">
-            <Setter Property="Control.Background" Value="MidnightBlue"/>
-        </Style>
-
-        <!-- Pink style for menu item -->
-        <Style x:Key="pinkMenuItm">
-            <Setter Property="Control.Background" Value="LightPink"/>
-            <Setter Property="Control.BorderBrush" Value="PaleVioletRed"/>
-        </Style>
-
     </Window.Resources>
 
     <Window.InputBindings>
@@ -272,9 +28,22 @@
         <KeyBinding Key="D8" Command="{Binding NumberBtnPressed}" CommandParameter="8" />
         <KeyBinding Key="D9" Command="{Binding NumberBtnPressed}" CommandParameter="9" />
 
+        <KeyBinding Key="NumPad0" Command="{Binding NumberBtnPressed}" CommandParameter="0" />
+        <KeyBinding Key="NumPad1" Command="{Binding NumberBtnPressed}" CommandParameter="1" />
+        <KeyBinding Key="NumPad2" Command="{Binding NumberBtnPressed}" CommandParameter="2" />
+        <KeyBinding Key="NumPad3" Command="{Binding NumberBtnPressed}" CommandParameter="3" />
+        <KeyBinding Key="NumPad4" Command="{Binding NumberBtnPressed}" CommandParameter="4" />
+        <KeyBinding Key="NumPad5" Command="{Binding NumberBtnPressed}" CommandParameter="5" />
+        <KeyBinding Key="NumPad6" Command="{Binding NumberBtnPressed}" CommandParameter="6" />
+        <KeyBinding Key="NumPad7" Command="{Binding NumberBtnPressed}" CommandParameter="7" />
+        <KeyBinding Key="NumPad8" Command="{Binding NumberBtnPressed}" CommandParameter="8" />
+        <KeyBinding Key="NumPad9" Command="{Binding NumberBtnPressed}" CommandParameter="9" />
+
         <KeyBinding Key="Backspace" Command="{Binding DelBtnPressed}" />
         <KeyBinding Key="Delete" Command="{Binding ClearEntryBtnPressed}" />
+        <KeyBinding Key="Decimal" Command="{Binding ClearEntryBtnPressed}" />
         <KeyBinding Key="Esc" Command="{Binding ClearBtnPressed}" />
+        
         <KeyBinding Key="F9" Modifiers="Shift" Command="{Binding OneOperandOperationBtnPressed}" 
                     CommandParameter="+-" />
         <KeyBinding Key="D2" Modifiers="Shift" Command="{Binding OneOperandOperationBtnPressed}" 
@@ -289,15 +58,24 @@
                     CommandParameter="*" />
         <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding TwoOperandOperationBtnPressed}" 
                     CommandParameter="+" />
+        
         <KeyBinding Key="OemPlus" Command="{Binding EqualsBtnPressed}" />
+        <KeyBinding Key="Enter" Command="{Binding EqualsBtnPressed}" />
+        
         <KeyBinding Key="OemComma" Command="{Binding PointBtnPressed}" />
         <KeyBinding Key="OemPeriod" Command="{Binding PointBtnPressed}" />
+        <KeyBinding Key="Decimal" Modifiers="Shift" Command="{Binding PointBtnPressed}" />
+
+        <KeyBinding Key="Divide" Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="/" />
+        <KeyBinding Key="Subtract" Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="-" />
+        <KeyBinding Key="Multiply" Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="*" />
+        <KeyBinding Key="Add" Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="+" />
 
     </Window.InputBindings>
     
     <!-- Main part of design -->
-    
-    <Grid x:Name="mgrid" Style="{StaticResource blueGrid}">
+
+    <Grid x:Name="mgrid" Style="{DynamicResource styleGrid}">
         <Grid.Resources >
             <Style TargetType="{x:Type Border}" >
                 <Setter Property="Padding" Value="5,5,5,5" />
@@ -305,15 +83,16 @@
         </Grid.Resources>
 
         <Border>
-            <Grid x:Name="grid" Style="{StaticResource blueGrid}">
+            <Grid x:Name="grid" Style="{DynamicResource styleGrid}" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -323,81 +102,90 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Menu x:Name="menu" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" 
-                      Grid.ColumnSpan="5" Style="{StaticResource blueMenu}">
+                <Menu x:Name="menu" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Height="auto"
+                      Grid.ColumnSpan="5" Style="{DynamicResource styleMenu}" Margin="0" Padding="0">
                     <MenuItem x:Name="menuitm" Header="style" Click="ChangeStyle_Click" 
-                              Style="{StaticResource blueMenuItm}"/>
+                              Style="{DynamicResource styleMenuItem}" Height="auto"/>
                 </Menu>
 
-                <Viewbox Stretch="Fill" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
-                    <RichTextBox x:Name="textbox" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                 AncestorType=Viewbox}, Path=ActualWidth}" 
-                                 IsReadOnly="True" VerticalAlignment="Bottom"  
-                                 Style="{StaticResource blueTextbox}">
-                        <FlowDocument PagePadding="0">
-                            <Paragraph x:Name="p1" TextAlignment="Right" Margin="0">
-                                <Run Text="{Binding Path=Stack, UpdateSourceTrigger=PropertyChanged}"/>
-                            </Paragraph>
-                            <Paragraph TextAlignment="Right" FontSize="{Binding FontSize, ElementName=p1, 
-                                ConverterParameter=4, Converter={StaticResource Converter}}" Margin="0">
-                                <Run Text="{Binding Path=Input, UpdateSourceTrigger=PropertyChanged}"/>
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                </Viewbox>
+                <RichTextBox x:Name="textbox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+                                 IsReadOnly="True" VerticalAlignment="Stretch" Height="auto"
+                                 Style="{DynamicResource styleTextbox}">
+                    <FlowDocument PagePadding="0" PageHeight="auto">
+                        <Paragraph x:Name="p1" TextAlignment="Right" Margin="0" LineHeight="auto" >
+                            <Run Text="{Binding Path=Stack, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Paragraph>
+                        <Paragraph TextAlignment="Right" FontSize="{Binding FontSize, ElementName=p1, 
+                                ConverterParameter=4, Converter={StaticResource Converter}}" Margin="0" 
+                                       LineHeight="auto">
+                            <Run Text="{Binding Path=Input, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
 
-                <Button x:Name="strbtn" Grid.Row="2" Grid.Column="0" Content="&#10229;"  FontWeight="Bold" 
-                        Command="{Binding DelBtnPressed}" Style="{StaticResource blueButton}"/>
-                <Button x:Name="CEbtn" Grid.Row="2" Grid.Column="1" Content="CE" 
-                        Command="{Binding ClearEntryBtnPressed}" Style="{StaticResource blueButton}"/>
-                <Button x:Name="Cbtn" Grid.Row="2" Grid.Column="2" Content="C" 
-                        Command="{Binding ClearBtnPressed}" Style="{StaticResource blueButton}"/>
-                <Button x:Name="pmbtn" Grid.Row="2" Grid.Column="3" Content="±" Style="{StaticResource blueButton}"
+                <Button x:Name="mcbtn" Grid.Row="2" Grid.Column="0" Content="MC" Style="{DynamicResource styleButton1}" 
+                        Command="{Binding MemoryBtnPressed}" CommandParameter="mc" />
+                <Button x:Name="mrbtn" Grid.Row="2" Grid.Column="1" Content="MR" Style="{DynamicResource styleButton1}"
+                        Command="{Binding MemoryBtnPressed}" CommandParameter="mr" />
+                <Button x:Name="mstn" Grid.Row="2" Grid.Column="2" Content="MS" Style="{DynamicResource styleButton1}"
+                        Command="{Binding MemoryBtnPressed}" CommandParameter="ms" />
+                <Button x:Name="mpbtn" Grid.Row="2" Grid.Column="3" Content="M+" Style="{DynamicResource styleButton1}"
+                        Command="{Binding MemoryBtnPressed}" CommandParameter="mp" />
+                <Button x:Name="mmbtn" Grid.Row="2" Grid.Column="4" Content="M-" Style="{DynamicResource styleButton1}"
+                        Command="{Binding MemoryBtnPressed}" CommandParameter="mm"/>
+                
+                <Button x:Name="strbtn" Grid.Row="3" Grid.Column="0" Content="&#10229;"  FontWeight="Bold" 
+                        Command="{Binding DelBtnPressed}" Style="{DynamicResource styleButton1}"/>
+                <Button x:Name="CEbtn" Grid.Row="3" Grid.Column="1" Content="CE" 
+                        Command="{Binding ClearEntryBtnPressed}" Style="{DynamicResource styleButton1}"/>
+                <Button x:Name="Cbtn" Grid.Row="3" Grid.Column="2" Content="C" 
+                        Command="{Binding ClearBtnPressed}" Style="{DynamicResource styleButton1}"/>
+                <Button x:Name="pmbtn" Grid.Row="3" Grid.Column="3" Content="±" Style="{DynamicResource styleButton1}"
                         Command="{Binding OneOperandOperationBtnPressed}" CommandParameter="+-" />
-                <Button x:Name="rbtn" Grid.Row="2" Grid.Column="4" Content="√" Style="{StaticResource blueButton}"
+                <Button x:Name="rbtn" Grid.Row="3" Grid.Column="4" Content="√" Style="{DynamicResource styleButton1}"
                         Command="{Binding OneOperandOperationBtnPressed}" CommandParameter="r"/>
 
-                <Button x:Name="btn7" Grid.Row="3" Grid.Column="0" Content="7" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="7" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn8" Grid.Row="3" Grid.Column="1" Content="8" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="8" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn9" Grid.Row="3" Grid.Column="2" Content="9" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="9" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btndiv" Grid.Row="3" Grid.Column="3" Content="/" Style="{StaticResource blueButton}"
+                <Button x:Name="btn7" Grid.Row="4" Grid.Column="0" Content="7" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="7" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn8" Grid.Row="4" Grid.Column="1" Content="8" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="8" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn9" Grid.Row="4" Grid.Column="2" Content="9" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="9" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btndiv" Grid.Row="4" Grid.Column="3" Content="/" Style="{DynamicResource styleButton1}"
                         Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="/"/>
-                <Button x:Name="btnperc" Grid.Row="3" Grid.Column="4" Content="%" Style="{StaticResource blueButton}"
-                        Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="%"/>
+                <Button x:Name="btnperc" Grid.Row="4" Grid.Column="4" Content="%" Style="{DynamicResource styleButton1}"
+                        Command="{Binding OneOperandOperationBtnPressed}" CommandParameter="%"/>
 
-                <Button x:Name="btn4" Grid.Row="4" Grid.Column="0" Content="4" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="4" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn5" Grid.Row="4" Grid.Column="1" Content="5" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="5" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn6" Grid.Row="4" Grid.Column="2" Content="6" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="6" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btnmult" Grid.Row="4" Grid.Column="3" Content="*" Style="{StaticResource blueButton}"
+                <Button x:Name="btn4" Grid.Row="5" Grid.Column="0" Content="4" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="4" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn5" Grid.Row="5" Grid.Column="1" Content="5" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="5" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn6" Grid.Row="5" Grid.Column="2" Content="6" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="6" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btnmult" Grid.Row="5" Grid.Column="3" Content="*" Style="{DynamicResource styleButton1}"
                         Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="*"/>
-                <Button x:Name="btnrev" Grid.Row="4" Grid.Column="4" Content="1/𝓍" Style="{StaticResource blueButton}"
+                <Button x:Name="btnrev" Grid.Row="5" Grid.Column="4" Content="1/𝓍" Style="{DynamicResource styleButton1}"
                         Command="{Binding OneOperandOperationBtnPressed}" CommandParameter="-1"/>
 
-                <Button x:Name="btn1" Grid.Row="5" Grid.Column="0" Content="1" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="1" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn2" Grid.Row="5" Grid.Column="1" Content="2" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="2" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btn3" Grid.Row="5" Grid.Column="2" Content="3" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="3" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btnmin" Grid.Row="5" Grid.Column="3" Content="-" Style="{StaticResource blueButton}"
+                <Button x:Name="btn1" Grid.Row="6" Grid.Column="0" Content="1" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="1" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn2" Grid.Row="6" Grid.Column="1" Content="2" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="2" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btn3" Grid.Row="6" Grid.Column="2" Content="3" Command="{Binding NumberBtnPressed}" 
+                        CommandParameter="3" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btnmin" Grid.Row="6" Grid.Column="3" Content="-" Style="{DynamicResource styleButton1}"
                         Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="-"/>
-                <Button x:Name="btneq" Grid.Row="5" Grid.Column="4" Content="=" Grid.RowSpan="2" 
-                        Style="{StaticResource tallButton}" Command="{Binding EqualsBtnPressed}"/>
+                <Button x:Name="btneq" Grid.Row="6" Grid.Column="4" Content="=" Grid.RowSpan="2" 
+                        Style="{DynamicResource styleTallButton}" Command="{Binding EqualsBtnPressed}"/>
 
-                <Button x:Name="btn0" Grid.Row="6" Grid.Column="0" 
+                <Button x:Name="btn0" Grid.Row="7" Grid.Column="0" 
                         Content="0" Grid.ColumnSpan="2" Command="{Binding NumberBtnPressed}" 
-                        CommandParameter="0" Style="{StaticResource lightBlueButton}"/>
-                <Button x:Name="btncomma" Grid.Row="6" Grid.Column="2" Content="," 
-                        Style="{StaticResource lightBlueButton}" 
+                        CommandParameter="0" Style="{DynamicResource styleButton2}"/>
+                <Button x:Name="btncomma" Grid.Row="7" Grid.Column="2" Content="," 
+                        Style="{DynamicResource styleButton2}" 
                         Command="{Binding PointBtnPressed}"/>
-                <Button x:Name="btnplus" Grid.Row="6" Grid.Column="3" Content="+" 
-                        Style="{StaticResource blueButton}"
+                <Button x:Name="btnplus" Grid.Row="7" Grid.Column="3" Content="+" 
+                        Style="{DynamicResource styleButton1}"
                         Command="{Binding TwoOperandOperationBtnPressed}" CommandParameter="+"/>
 
             </Grid>

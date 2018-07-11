@@ -20,81 +20,38 @@ namespace calc.View
     public partial class MainWindow : Window
     {
         private bool style;
+        private ResourceDictionary BlueStyle;
+        private ResourceDictionary PinkStyle;
 
         public MainWindow()
         {
             InitializeComponent();
-            style = true; //first style is blue
+            style = false; 
+            //defining paths to blue and pink skins
+            BlueStyle = new ResourceDictionary();
+            BlueStyle.Source = new Uri("../Styles/BlueStyle.xaml", UriKind.Relative);
+            PinkStyle = new ResourceDictionary();
+            PinkStyle.Source = new Uri("../Styles/PinkStyle.xaml", UriKind.Relative);
+            this.Resources.MergedDictionaries.Clear();
+            //load blue skin
+            this.Resources.MergedDictionaries.Add(BlueStyle);
         }
 
-        //Changes styles after clicking menu button
+        //on button "style" click change style
         private void ChangeStyle_Click(object sender, RoutedEventArgs e)
         {
-            if(style)
+            if (style)
             {
-                mgrid.Style = (Style)this.Resources["pinkGrid"];
-                grid.Style = (Style)this.Resources["pinkGrid"];
-                menu.Style = (Style)this.Resources["pinkMenu"];
-                menuitm.Style = (Style)this.Resources["pinkMenuItm"];
-                textbox.Style = (Style)this.Resources["pinkTextbox"];
-                btn1.Style = (Style)this.Resources["lightPinkButton"];
-                btn2.Style = (Style)this.Resources["lightPinkButton"];
-                btn3.Style = (Style)this.Resources["lightPinkButton"];
-                btn4.Style = (Style)this.Resources["lightPinkButton"];
-                btn5.Style = (Style)this.Resources["lightPinkButton"];
-                btn6.Style = (Style)this.Resources["lightPinkButton"];
-                btn7.Style = (Style)this.Resources["lightPinkButton"];
-                btn8.Style = (Style)this.Resources["lightPinkButton"];
-                btn9.Style = (Style)this.Resources["lightPinkButton"];
-                btn0.Style = (Style)this.Resources["lightPinkButton"];
-                strbtn.Style = (Style)this.Resources["lightPinkButton"];
-                CEbtn.Style = (Style)this.Resources["lightPinkButton"];
-                Cbtn.Style = (Style)this.Resources["lightPinkButton"];
-                pmbtn.Style = (Style)this.Resources["lightPinkButton"];
-                rbtn.Style = (Style)this.Resources["lightPinkButton"];
-                btndiv.Style = (Style)this.Resources["lightPinkButton"];
-                btnperc.Style = (Style)this.Resources["lightPinkButton"];
-                btnmult.Style = (Style)this.Resources["lightPinkButton"];
-                btnrev.Style = (Style)this.Resources["lightPinkButton"];
-                btnmin.Style = (Style)this.Resources["lightPinkButton"];
-                btnplus.Style = (Style)this.Resources["lightPinkButton"];
-                btncomma.Style = (Style)this.Resources["lightPinkButton"];
-                btneq.Style = (Style)this.Resources["pkTallButton"];
+                this.Resources.MergedDictionaries.Clear();
+                this.Resources.MergedDictionaries.Add(BlueStyle);
                 style = false;
             }
             else
             {
-                mgrid.Style = (Style)this.Resources["blueGrid"];
-                grid.Style = (Style)this.Resources["blueGrid"];
-                menu.Style = (Style)this.Resources["blueMenu"];
-                menuitm.Style = (Style)this.Resources["blueMenuItm"];
-                textbox.Style = (Style)this.Resources["blueTextbox"];
-                btn1.Style = (Style)this.Resources["lightBlueButton"];
-                btn2.Style = (Style)this.Resources["lightBlueButton"];
-                btn3.Style = (Style)this.Resources["lightBlueButton"];
-                btn4.Style = (Style)this.Resources["lightBlueButton"];
-                btn5.Style = (Style)this.Resources["lightBlueButton"];
-                btn6.Style = (Style)this.Resources["lightBlueButton"];
-                btn7.Style = (Style)this.Resources["lightBlueButton"];
-                btn8.Style = (Style)this.Resources["lightBlueButton"];
-                btn9.Style = (Style)this.Resources["lightBlueButton"];
-                btn0.Style = (Style)this.Resources["lightBlueButton"];
-                strbtn.Style = (Style)this.Resources["blueButton"];
-                CEbtn.Style = (Style)this.Resources["blueButton"];
-                Cbtn.Style = (Style)this.Resources["blueButton"];
-                pmbtn.Style = (Style)this.Resources["blueButton"];
-                rbtn.Style = (Style)this.Resources["blueButton"];
-                btndiv.Style = (Style)this.Resources["blueButton"];
-                btnperc.Style = (Style)this.Resources["blueButton"];
-                btnmult.Style = (Style)this.Resources["blueButton"];
-                btnrev.Style = (Style)this.Resources["blueButton"];
-                btnmin.Style = (Style)this.Resources["blueButton"];
-                btnplus.Style = (Style)this.Resources["blueButton"];
-                btncomma.Style = (Style)this.Resources["lightBlueButton"];
-                btneq.Style = (Style)this.Resources["tallButton"];
+                this.Resources.MergedDictionaries.Clear();
+                this.Resources.MergedDictionaries.Add(PinkStyle);
                 style = true;
             }
-            
         }
     }
 
@@ -104,28 +61,36 @@ namespace calc.View
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double coef = 1;
+            bool fl = false;
             if (parameter != null)
             {
                 string p = parameter.ToString();
+                if (p == "3" || p == "4")
+                    fl = true;
                 switch (p)
                 {
-                    case "1": //FontSize for btns
+                    case "0": //FontSize for light blue btns
                         coef = 0.4;
                         break;
+                    case "1": //FontSize for blue btns
+                        coef = 0.35;
+                        break;
                     case "2": //FontSize for =
-                        coef = 0.75;
+                        coef = 0.65;
                         break;
                     case "3": //FontSize for first paragrph textbox
-                        coef = 0.3;
+                        coef = 0.2;
                         break;
                     case "4": //FontSize for second paragrph textbox
-                        coef = 1.9;
+                        coef = 1.5;
                         break;
                     default:
                         break;
                 }
             }
             var height = (double)value;
+            if (fl) //make textbox font size bigger for more pleasant design
+                height += 5;
             return coef * height;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
